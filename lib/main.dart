@@ -12,12 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Simple To-Do App With Flutter",
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        // useMaterial3: true,
-      ),
-      home: const HomePage()
-    );
+        debugShowCheckedModeBanner: true,
+        title: "Simple To-Do App With Flutter",
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          // useMaterial3: true,
+        ),
+        home: const HomePage());
   }
 }
