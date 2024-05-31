@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_flutter_to_do_app/views/Table/table.dart';
+import 'package:simple_flutter_to_do_app/views/Tables/To-Dos/to_dos_table.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,8 +21,7 @@ class HomePage extends StatelessWidget {
               color: Colors.transparent,
               height: 100,
             ),
-            Title(),
-            CustomTable()
+            ToDosTable()
           ],
         ),
       )),
@@ -35,6 +34,9 @@ class Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("Reminder of To-Do's");
+    return const Text(
+      "Simple To-Do's",
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    );
   }
 }
