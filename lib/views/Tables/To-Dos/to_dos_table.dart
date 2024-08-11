@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:simple_flutter_to_do_app/views/Add-Task/add_task_screen.dart';
+import 'package:simple_flutter_to_do_app/views/Task-Detail/task_detail.dart';
 
 class ToDosTable extends StatefulWidget {
   const ToDosTable({Key? key}) : super(key: key);
@@ -10,9 +12,9 @@ class ToDosTable extends StatefulWidget {
 class _ToDosTableState extends State<ToDosTable> {
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
       child: SizedBox(
-        width: 350,
+        width: 375,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -20,7 +22,12 @@ class _ToDosTableState extends State<ToDosTable> {
             children: [
               Title(),
               Divider(height: 50, color: Colors.transparent),
-              Table()
+              SizedBox(
+                height: 300,
+                child: Table(context: context),
+              ),
+              Divider(height: 50, color: Colors.transparent),
+              NavigateToAddTaskScreenBtn(),
             ],
           ),
         ),
@@ -41,34 +48,158 @@ class Title extends StatelessWidget {
   }
 }
 
-class Table extends StatelessWidget {
-  const Table({Key? key}) : super(key: key);
+class Table extends StatefulWidget {
+  final BuildContext context;
+  const Table({Key? key, required this.context}) : super(key: key);
+
+  @override
+  _TableState createState() => _TableState();
+}
+
+class _TableState extends State<Table> {
+  final List<String> entries = <String>["Testin", "testin", "testing"];
+  final List<int> colorCodes = <int>[600, 500, 100];
+
+  final List<DataColumn> columns = [
+    DataColumn(
+        label: Expanded(
+      child: Text("Name"),
+    )),
+    DataColumn(
+        label: Expanded(
+      child: Text("Date"),
+    )),
+    DataColumn(
+        label: Expanded(
+      child: Text("View/Edit"),
+    )),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-              width: 1, color: Colors.black, style: BorderStyle.solid)),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
-            child: Checkbox(
-              value: false,
-              onChanged: (e) => print("test"),
-            ),
-          ),
-          Container(
-            child: Text("Test"),
-          )
-        ],
-      ),
+    return DataTable(
+      columns: columns,
+      rows: [
+        DataRow(
+            // color: ,
+            onSelectChanged: (value) =>
+                {debugPrint('testing'), showTaskDetailPopUp(context)},
+            cells: <DataCell>[
+              DataCell(Text(
+                checkDescLenght("something"),
+              )),
+              DataCell(Text("07/01/2024")),
+              DataCell(RemoveTaskBtn()),
+            ]),
+        DataRow(
+            // color: ,
+            onSelectChanged: (value) =>
+                {debugPrint('testing'), showTaskDetailPopUp(context)},
+            cells: <DataCell>[
+              DataCell(Text(
+                checkDescLenght("something"),
+              )),
+              DataCell(Text("07/01/2024")),
+              DataCell(RemoveTaskBtn()),
+            ]),
+        DataRow(
+            // color: ,
+            onSelectChanged: (value) =>
+                {debugPrint('testing'), showTaskDetailPopUp(context)},
+            cells: <DataCell>[
+              DataCell(Text(
+                checkDescLenght("something"),
+              )),
+              DataCell(Text("07/01/2024")),
+              DataCell(RemoveTaskBtn()),
+            ]),
+        DataRow(
+            // color: ,
+            onSelectChanged: (value) =>
+                {debugPrint('testing'), showTaskDetailPopUp(context)},
+            cells: <DataCell>[
+              DataCell(Text(
+                checkDescLenght("something"),
+              )),
+              DataCell(Text("07/01/2024")),
+              DataCell(RemoveTaskBtn()),
+            ]),
+        DataRow(
+            // color: ,
+            onSelectChanged: (value) =>
+                {debugPrint('testing'), showTaskDetailPopUp(context)},
+            cells: <DataCell>[
+              DataCell(Text(
+                checkDescLenght("something"),
+              )),
+              DataCell(Text("07/01/2024")),
+              DataCell(RemoveTaskBtn()),
+            ]),
+        DataRow(
+            // color: ,
+            onSelectChanged: (value) =>
+                {debugPrint('testing'), showTaskDetailPopUp(context)},
+            cells: <DataCell>[
+              DataCell(Text(
+                checkDescLenght("something"),
+              )),
+              DataCell(Text("07/01/2024")),
+              DataCell(RemoveTaskBtn()),
+            ]),
+      ],
+      dividerThickness: 1,
+      columnSpacing: 35,
+      showBottomBorder: true,
+      showCheckboxColumn: false,
     );
   }
+}
+
+class NavigateToAddTaskScreenBtn extends StatelessWidget {
+  const NavigateToAddTaskScreenBtn({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () => showAddTaskPopUp(context),
+        child: const Row(
+          children: [Spacer(), Icon(Icons.add), Text("Add a Task "), Spacer()],
+        ));
+  }
+}
+
+class RemoveTaskBtn extends StatelessWidget {
+  const RemoveTaskBtn({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+          elevation: MaterialStateProperty.all(2.5),
+          backgroundColor:
+              MaterialStateColor.resolveWith((states) => Colors.red)),
+      onPressed: () => debugPrint("test"),
+      child: Text("Edit"),
+    );
+  }
+}
+
+showAddTaskPopUp(context) {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const AddTaskModal()));
+}
+
+showTaskDetailPopUp(context) {
+  showDialog(context: context, builder: (BuildContext context) => TaskDetail());
+}
+
+checkDescLenght(String value) {
+  var newValue = "";
+  if (value.length > 14) {
+    newValue = value.substring(0, 5);
+    newValue = newValue + "...";
+    debugPrint(" value -->>  $value and newvalue --->> $newValue");
+    return newValue;
+  }
+  return value;
 }
